@@ -14,7 +14,7 @@ esbuild.buildSync({
   format: 'iife',
 });
 
-fs.copyFileSync(path.resolve(srcDir + '/result.html'), path.resolve(outDir + '/result.html'));
+fs.copyFileSync(path.resolve(srcDir + '/index.html'), path.resolve(outDir + '/index.html'));
 fs.copyFileSync(
   path.resolve(node_modules + '/es-module-shims/dist/es-module-shims.min.js'),
   path.resolve(outDir + '/es-module-shims.min.js'),
