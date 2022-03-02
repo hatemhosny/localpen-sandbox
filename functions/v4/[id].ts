@@ -9,11 +9,15 @@ export const onRequest: PgFunction = async function (context) {
   const { request, params, env } = context;
   const response = await env.ASSETS.fetch(request);
   const cf = (request as any).cf;
+  const url = new URL(request.url);
+  const queryParams = url.searchParams;
 
   context.data = {
     url: request.url,
     resource: params.id,
     method: request.method,
+    date: String(new Date()),
+
     colo: cf?.colo,
     country: cf?.country,
     httpProtocol: cf?.httpProtocol,
@@ -22,6 +26,7 @@ export const onRequest: PgFunction = async function (context) {
     region: cf?.region,
     regionCode: cf?.regionCode,
     timezone: cf?.timezone,
+
     accept: request.headers.get('accept'),
     'accept-encoding': request.headers.get('accept-encoding'),
     'accept-language': request.headers.get('accept-language'),
@@ -33,12 +38,18 @@ export const onRequest: PgFunction = async function (context) {
     'sec-fetch-mode': request.headers.get('sec-fetch-mode'),
     'sec-fetch-site': request.headers.get('sec-fetch-site'),
     'user-agent': request.headers.get('user-agent'),
+
     ok: response.ok,
     'content-encoding': response.headers.get('content-encoding'),
     'content-type': response.headers.get('content-type'),
-    date: String(new Date()),
     status: response.status,
     statusText: response.statusText,
+
+    'livecodes-markup': queryParams.get('markup'),
+    'livecodes-style': queryParams.get('style'),
+    'livecodes-script': queryParams.get('script'),
+    'livecodes-isEmbed': queryParams.get('isembed'),
+    'livecodes-isAnonymous': queryParams.get('isanonymous'),
   };
 
   context.waitUntil(logToAPI(context));
