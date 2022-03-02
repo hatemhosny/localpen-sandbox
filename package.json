@@ -10,5 +10,7 @@
     "url": "https://github.com/live-codes/livecodes-sandbox"
   },
   "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {
+    "@cloudflare/workers-types": "3.4.0"
+  }
 }
