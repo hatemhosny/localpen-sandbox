@@ -48,8 +48,8 @@ export const onRequest: PgFunction = async function (context) {
     'livecodes-markup': queryParams.get('markup'),
     'livecodes-style': queryParams.get('style'),
     'livecodes-script': queryParams.get('script'),
-    'livecodes-isEmbed': queryParams.get('isembed'),
-    'livecodes-isAnonymous': queryParams.get('isanonymous'),
+    'livecodes-isEmbed': queryParams.get('isEmbed'),
+    'livecodes-isLoggedIn': queryParams.get('isLoggedIn'),
   };
 
   context.waitUntil(logToAPI(context));
