@@ -12,8 +12,7 @@ export const onRequest: PgFunction = async function (context) {
   const url = new URL(request.url);
   const queryParams = url.searchParams;
   const path = params.path;
-  const resource = Array.isArray(path) ? path[1] : path;
-  const version = Array.isArray(path) ? path[0] : '';
+  const [version, resource] = path || [null, 'sandbox-index'];
 
   context.data = {
     url: request.url,
