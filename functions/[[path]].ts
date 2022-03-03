@@ -1,9 +1,9 @@
-/// <reference path="../../node_modules/@cloudflare/workers-types/index.d.ts" />
+/// <reference path="../node_modules/@cloudflare/workers-types/index.d.ts" />
 
 type Env = Record<'API_TOKEN', string>;
 type Data = Record<string, unknown>;
-type PgFunction = PagesFunction<Env, 'id', Data>;
-type Context = EventContext<Env, 'id', Data>;
+type PgFunction = PagesFunction<Env, 'path', Data>;
+type Context = EventContext<Env, 'path', Data>;
 
 export const onRequest: PgFunction = async function (context) {
   const { request, params, env } = context;
@@ -11,10 +11,15 @@ export const onRequest: PgFunction = async function (context) {
   const cf = (request as any).cf;
   const url = new URL(request.url);
   const queryParams = url.searchParams;
+  const path = params.path;
+  const resource = Array.isArray(path) ? path[1] : path;
+  const version = Array.isArray(path) ? path[0] : '';
 
   context.data = {
     url: request.url,
-    resource: params.id,
+    path: params.path,
+    version,
+    resource,
     method: request.method,
     date: String(new Date()),
 
