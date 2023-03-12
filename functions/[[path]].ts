@@ -13,12 +13,17 @@ export const onRequest: PgFunction = async function (context) {
   const queryParams = url.searchParams;
   const path = params.path;
   const [version, resource] = path || [null, 'sandbox-index'];
-  const response = originalResponse.clone();
 
-  // add headers
-  response.headers.set('Access-Control-Allow-Origin', '*');
-  // https://developer.chrome.com/blog/enabling-shared-array-buffer/#origin-trial
-  response.headers.set('foo', env.ORIGIN_TRIAL_TOKEN);
+  const response = new Response(originalResponse.body, {
+    status: originalResponse.status,
+    statusText: originalResponse.statusText,
+    headers: {
+      ...originalResponse.headers,
+      'Access-Control-Allow-Origin': '*',
+      // https://developer.chrome.com/blog/enabling-shared-array-buffer/#origin-trial
+      'Origin-Trial': env.ORIGIN_TRIAL_TOKEN,
+    },
+  });
 
   context.data = {
     url: request.url,
