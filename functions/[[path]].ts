@@ -19,7 +19,6 @@ export const onRequest: PgFunction = async function (context) {
     statusText: originalResponse.statusText,
     headers: {
       ...originalResponse.headers,
-      'Access-Control-Allow-Origin': '*',
       // https://developer.chrome.com/blog/enabling-shared-array-buffer/#origin-trial
       'Origin-Trial': env.ORIGIN_TRIAL_TOKEN,
     },
