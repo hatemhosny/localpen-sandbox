@@ -7,17 +7,18 @@ type Context = EventContext<Env, 'path', Data>;
 
 export const onRequest: PgFunction = async function (context) {
   const { request, params, env } = context;
-  const response = await env.ASSETS.fetch(request);
+  const originalResponse = await env.ASSETS.fetch(request);
   const cf = (request as any).cf;
   const url = new URL(request.url);
   const queryParams = url.searchParams;
   const path = params.path;
   const [version, resource] = path || [null, 'sandbox-index'];
+  const response = originalResponse.clone();
 
   // add headers
   response.headers.set('Access-Control-Allow-Origin', '*');
   // https://developer.chrome.com/blog/enabling-shared-array-buffer/#origin-trial
-  // response.headers.set('foo', env.ORIGIN_TRIAL_TOKEN || '');
+  response.headers.set('foo', env.ORIGIN_TRIAL_TOKEN);
 
   context.data = {
     url: request.url,
