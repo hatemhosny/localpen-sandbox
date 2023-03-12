@@ -17,7 +17,7 @@ export const onRequest: PgFunction = async function (context) {
   // add headers
   response.headers.set('Access-Control-Allow-Origin', '*');
   // https://developer.chrome.com/blog/enabling-shared-array-buffer/#origin-trial
-  response.headers.set('foo', env.ORIGIN_TRIAL_TOKEN);
+  response.headers.set('foo', env.ORIGIN_TRIAL_TOKEN || '');
 
   context.data = {
     url: request.url,
