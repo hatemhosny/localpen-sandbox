@@ -1,6 +1,6 @@
 /// <reference path="../node_modules/@cloudflare/workers-types/index.d.ts" />
 
-type Env = Record<'API_TOKEN', string>;
+type Env = Record<'API_TOKEN' | 'ORIGIN_TRIAL_TOKEN', string>;
 type Data = Record<string, unknown>;
 type PgFunction = PagesFunction<Env, 'path', Data>;
 type Context = EventContext<Env, 'path', Data>;
@@ -13,6 +13,11 @@ export const onRequest: PgFunction = async function (context) {
   const queryParams = url.searchParams;
   const path = params.path;
   const [version, resource] = path || [null, 'sandbox-index'];
+
+  // add headers
+  response.headers.set('Access-Control-Allow-Origin', '*');
+  // https://developer.chrome.com/blog/enabling-shared-array-buffer/#origin-trial
+  response.headers.set('foo', env.ORIGIN_TRIAL_TOKEN);
 
   context.data = {
     url: request.url,
