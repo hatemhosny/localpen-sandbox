@@ -18,6 +18,9 @@ export const onRequest: PgFunction = async function (context) {
     status: originalResponse.status,
     statusText: originalResponse.statusText,
     headers: {
+      ...(url.pathname.endsWith('.js')
+        ? { 'content-type': 'text/javascript' }
+        : {}),
       ...originalResponse.headers,
       // https://developer.chrome.com/blog/enabling-shared-array-buffer/#origin-trial
       'Origin-Trial': env.ORIGIN_TRIAL_TOKEN,
