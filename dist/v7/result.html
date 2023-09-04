@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script id="message-script" data-env="development">
+      window.addEventListener('message', function (event) {
+        var html = event.data.result || event.data.html;
+        if (html) {
+          document.write(html);
+          document.close();
+        }
+      });
+    </script>
+  </head>
+  <body></body>
+</html>
